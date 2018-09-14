@@ -43,7 +43,18 @@ public class Server extends java.rmi.server.UnicastRemoteObject implements Ichat
     public String connect(String user_name) throws RemoteException
     {
         names.add(user_name);
-        return "OK";
+        
+        return user_name;
+    }
+    public void disconnect(String id)
+    {   
+        names.remove(id);
+        
+    }
+    @Override
+    public ArrayList<String> listOfClients()
+    {
+        return this.names;
     }
     
 }

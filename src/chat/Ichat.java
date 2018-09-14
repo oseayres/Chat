@@ -5,6 +5,8 @@
  */
 package chat;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author jp
@@ -12,4 +14,6 @@ package chat;
 public interface Ichat extends java.rmi.Remote
 {
     public String connect(String user_name) throws java.rmi.RemoteException;
+    public ArrayList<String> listOfClients() throws java.rmi.RemoteException;
+    public void disconnect(String id) throws java.rmi.RemoteException;
 }

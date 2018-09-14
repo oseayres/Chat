@@ -28,8 +28,7 @@ public class Login extends javax.swing.JFrame
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -37,6 +36,7 @@ public class Login extends javax.swing.JFrame
         jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel1.setText("Chat público");
@@ -44,19 +44,15 @@ public class Login extends javax.swing.JFrame
 
         jLabel2.setText("Nome:");
 
-        jTextField1.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField1ActionPerformed(evt);
             }
         });
 
         jButton1.setText("Enviar");
-        jButton1.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
@@ -96,7 +92,8 @@ public class Login extends javax.swing.JFrame
         jTextField1.getAccessibleContext().setAccessibleName("JTextField_name");
         jButton1.getAccessibleContext().setAccessibleName("jButton_enviar");
 
-        pack();
+        setSize(new java.awt.Dimension(410, 348));
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jTextField1ActionPerformed
@@ -110,10 +107,11 @@ public class Login extends javax.swing.JFrame
     {//GEN-HEADEREND:event_jButton1ActionPerformed
         try
         {
-            chat.Client c = new chat.Client(this, jTextField1.getText());
-//            ChatWindow2 win2 = new ChatWindow2(c);
-//            this.setVisible(false);
-//            win2.setVisible(true);
+//            chat.Client c = new chat.Client(this, jTextField1.getText());
+            String user = jTextField1.getText();
+            ChatWindow2 win2 = new ChatWindow2(user,this);
+            this.setVisible(false);
+            win2.setVisible(true);
         }
         catch (Exception ex)
         {
@@ -121,10 +119,7 @@ public class Login extends javax.swing.JFrame
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    public void hello(String s)
-    {
-        JOptionPane.showMessageDialog(this, s);
-    }
+
     
     /**
      * @param args the command line arguments
