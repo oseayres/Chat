@@ -21,8 +21,13 @@ public class Client
 {
     private Ichat remote_ref;
     private view.ChatWindow2 view_ref;
+    private ClientServices client_services_ref;
     private String user_name;
+    private String id;
     private ArrayList<String> clients;
+    
+    private Thread th;
+    private ClientServices th_run;
     
     
     public static void main(String args[])
@@ -35,25 +40,13 @@ public class Client
     {
         try
         {
+            // Connect to server
             this.remote_ref = (Ichat) Naming.lookup("rmi://localhost:1099/joe-chat");
-            String id;
-            id = remote_ref.connect(user_name);
-            if (true)
-            {
-                
-                view_ref.hello("Seja bem vindo " + user_name);
-                // requisiton of list
-                clients = remote_ref.listOfClients();
-                view_ref.writeAllUsers(clients);
-                
-                
-                
-                
-            }
-                
-            else
-                view_ref.hello("Erro ao conectar ao servidor");
-            
+            this.id = remote_ref.connect(user_name);
+
+            // Get list of all clients
+            clients = remote_ref.listOfClients();
+            view_ref.writeAllUsers(clients);
         }
         catch (Exception ex)
         {
@@ -63,10 +56,30 @@ public class Client
         this.view_ref = view_ref;
         this.user_name = user_name;
     }
+    
+    public void init()
+    {
+        // Make interface to the server communicate with the client
+        th_run = new ClientServices(this, id);
+        th = new Thread(th_run);
+        th.start();
+    }
+    
+    
+    public void updateListOfClients() throws RemoteException
+    {
+        clients = remote_ref.listOfClients();
+        view_ref.writeAllUsers(clients);
+    }
+    
+    
     public void destroy() throws RemoteException
     {
         this.remote_ref.disconnect(user_name);
+        th_run.die();
     }
+    
+    
 //    public ArrayList<String> getClients()
 //    {
 //        
