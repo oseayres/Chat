@@ -28,6 +28,7 @@ public class ChatWindow2 extends javax.swing.JFrame
 {
     private chat.Client client;
     private view.Login screenLogin;
+    private String user_name;
 
     /**
      * Creates new form ChatWindow2
@@ -39,20 +40,9 @@ public class ChatWindow2 extends javax.swing.JFrame
     public ChatWindow2(String user_name, view.Login screenLogin) throws Exception
     {
         initComponents();
-        
-        // se o cara chegar aqui via f6
-//        if (client == null)
-//            destoi a janela
-        chat.Client c = new chat.Client(this,user_name);
-        c.init();
-        
-        this.client = c;
-//        this.client.
+               
+        this.user_name = user_name;
         this.screenLogin = screenLogin;
-    }
-
-    private ChatWindow2(Object object) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     
@@ -237,11 +227,22 @@ public class ChatWindow2 extends javax.swing.JFrame
 
     private void formWindowOpened(java.awt.event.WindowEvent evt)//GEN-FIRST:event_formWindowOpened
     {//GEN-HEADEREND:event_formWindowOpened
-        // TODO add your handling code here:
-//          JOptionPane.showMessageDialog(this, "Teste");
-          this.getRootPane().setDefaultButton(jButton1);
-          jTextPane1.setBackground(Color.red);
-          jTextPane1.setText("Selecione alguem");
+        jLabel1.setText("Seja bem vindo " + user_name);
+        
+        try
+        {
+            client = new chat.Client(this, user_name);
+            client.init();
+        }
+        catch (Exception e)
+        {
+            throw new RuntimeException(e);
+        }
+        
+        
+        this.getRootPane().setDefaultButton(jButton1);
+        jTextPane1.setBackground(Color.red);
+        jTextPane1.setText("Selecione alguem");
           
     }//GEN-LAST:event_formWindowOpened
 
@@ -293,7 +294,7 @@ public class ChatWindow2 extends javax.swing.JFrame
         {
             public void run()
             {
-                new ChatWindow2(null).setVisible(true);
+//                new ChatWindow2(null).setVisible(true);
             }
         });
     }

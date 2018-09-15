@@ -38,11 +38,26 @@ public class Client
     
     public Client(view.ChatWindow2 view_ref, String user_name) throws Exception
     {
+        this.view_ref = view_ref;
+        this.user_name = user_name;
+    }
+    
+    public void init()
+    {
         try
         {
             // Connect to server
-            this.remote_ref = (Ichat) Naming.lookup("rmi://localhost:1099/joe-chat");
-            this.id = remote_ref.connect(user_name);
+            remote_ref = (Ichat) Naming.lookup("rmi://localhost:1099/joe-chat");
+            id = remote_ref.connect(user_name);
+            
+            // Make interface to the server communicate with the client
+            th_run = new ClientServices(this, id);
+            th = new Thread(th_run);
+            th.start();
+            
+            // Inform server about its interface
+            Thread.sleep(100);
+            remote_ref.activateClient(id);
 
             // Get list of all clients
             clients = remote_ref.listOfClients();
@@ -50,19 +65,8 @@ public class Client
         }
         catch (Exception ex)
         {
-            throw ex;
+            throw new RuntimeException(ex);
         }
-        
-        this.view_ref = view_ref;
-        this.user_name = user_name;
-    }
-    
-    public void init()
-    {
-        // Make interface to the server communicate with the client
-        th_run = new ClientServices(this, id);
-        th = new Thread(th_run);
-        th.start();
     }
     
     

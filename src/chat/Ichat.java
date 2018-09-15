@@ -14,6 +14,7 @@ import java.util.ArrayList;
 public interface Ichat extends java.rmi.Remote
 {
     public String connect(String user_name) throws java.rmi.RemoteException;
+    public String activateClient(String client_id) throws java.rmi.RemoteException;
     public ArrayList<String> listOfClients() throws java.rmi.RemoteException;
     public void disconnect(String id) throws java.rmi.RemoteException;
 }

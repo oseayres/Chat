@@ -83,6 +83,7 @@ class RMIWorker extends java.rmi.server.UnicastRemoteObject implements IClientSe
     @Override
     public void updateListOfClients() throws RemoteException
     {
+        System.out.println("updateListOfClients");
         client.updateListOfClients();
     }
 }
@@ -114,8 +115,6 @@ public class ClientServices implements Runnable
         {
             System.err.println(e.getMessage());
         }
-        
-        System.out.println("lkgbhg");
     }
     
     public void die()

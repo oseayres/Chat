@@ -54,30 +54,62 @@ public class Server extends java.rmi.server.UnicastRemoteObject implements Ichat
     public String connect(String user_name) throws RemoteException
     {
         names.add(user_name);
-        for (int i = 0; i < names.size() - 1; i++)
-        {
-            try
-            {
-                System.out.println(getClientHost());
-                
-                IClientServices c_ref = (IClientServices) Naming.lookup("rmi://localhost:1099/"
-                    + names.get(i));
-                c_ref.updateListOfClients();
-            }
-            catch (Exception ex)
-            {
-                System.err.println(ex);
-            }
-        }
         
+        System.out.println("List of clients:");
+        for (int i = 0; i < names.size(); i++)
+            System.out.println(names.get(i));
+                
         return user_name;
     }
     
     
     @Override
+    public String activateClient(String client_id) throws RemoteException
+    {
+        try
+        {
+            // Register the interface of the client
+            IClientServices c_ref = (IClientServices) Naming.lookup("rmi://localhost:1099/"
+                + client_id);
+            clients_interfaces.add(c_ref);
+            
+            
+            // Notify every other clients
+            for (int i = 0; i < clients_interfaces.size() - 1; i++)
+            {
+                clients_interfaces.get(i).updateListOfClients();
+            }
+            
+            return "OK";
+        }
+        catch (Exception ex)
+        {
+            System.err.println(ex);
+            return ex.toString();
+        }
+    }
+    
+    
+    @Override
     public void disconnect(String id)
-    {   
-        names.remove(id); 
+    {    
+        try
+        {
+            // Remove client
+            int idx = names.indexOf(id);
+            names.remove(idx);
+            clients_interfaces.remove(idx);
+            
+            // Notify every other clients
+            for (int i = 0; i < clients_interfaces.size(); i++)
+            {
+                clients_interfaces.get(i).updateListOfClients();
+            }
+        }
+        catch (Exception ex)
+        {
+            System.err.println(ex);
+        }
     }
     
     
@@ -86,5 +118,4 @@ public class Server extends java.rmi.server.UnicastRemoteObject implements Ichat
     {
         return this.names;
     }
-    
 }
