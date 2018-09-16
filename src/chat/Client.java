@@ -20,7 +20,7 @@ import java.util.logging.Logger;
 public class Client
 {
     private Ichat remote_ref;
-    private view.ChatWindow2 view_ref;
+    private view.ChatWindow view_ref;
     private ClientServices client_services_ref;
     private String user_name;
     private String id;
@@ -36,7 +36,7 @@ public class Client
     }
     
     
-    public Client(view.ChatWindow2 view_ref, String user_name) throws Exception
+    public Client(view.ChatWindow view_ref, String user_name) throws Exception
     {
         this.view_ref = view_ref;
         this.user_name = user_name;
