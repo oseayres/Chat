@@ -86,6 +86,12 @@ class RMIWorker extends java.rmi.server.UnicastRemoteObject implements IClientSe
         System.out.println("updateListOfClients");
         client.updateListOfClients();
     }
+
+    @Override
+    public void recvMsgFromServer(String senderId, String msgContent)
+    {
+        client.recvMsgFromServer(senderId, msgContent);
+    }
 }
 
 

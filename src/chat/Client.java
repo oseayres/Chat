@@ -34,13 +34,14 @@ public class Client
     {
         new view.Login().setVisible(true);
     }
-    
+   
     
     public Client(view.ChatWindow view_ref, String user_name) throws Exception
     {
         this.view_ref = view_ref;
         this.user_name = user_name;
     }
+   
     
     public void init()
     {
@@ -88,4 +89,14 @@ public class Client
 //    {
 //        
 //    }
+
+    public void sendMessage(String receiver, String textSubmit) throws RemoteException 
+    {
+//        System.out.println("sending msg");
+        remote_ref.managerMessage(this.id, receiver, textSubmit);
+    }
+    public void recvMsgFromServer(String senderId, String msgContent)
+    {
+        view_ref.setText(msgContent);
+    }
 }

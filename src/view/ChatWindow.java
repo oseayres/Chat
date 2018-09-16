@@ -29,6 +29,10 @@ public class ChatWindow extends javax.swing.JFrame
     private chat.Client client;
     private view.Login screenLogin;
     private String user_name;
+    
+    // styling the text
+    private SimpleAttributeSet myAttributeSet;
+    private SimpleAttributeSet theirAttributeSet;
 
     /**
      * Creates new form ChatWindow2
@@ -183,14 +187,9 @@ public class ChatWindow extends javax.swing.JFrame
 //        jTextPane1.setText(textSubmit);
         StyledDocument doc = jTextPaneChat.getStyledDocument();
         
-        SimpleAttributeSet keyword = new SimpleAttributeSet();
-        StyleConstants.setForeground(keyword, Color.white);
-        StyleConstants.setBackground(keyword, Color.black);
-//        StyleConstants.set
-        StyleConstants.setBold(keyword, true);
         try
         {
-            doc.insertString(doc.getLength(), textSubmit +"\n", keyword);
+            doc.insertString(doc.getLength(), textSubmit +"\n", myAttributeSet);
         }
         catch(Exception e)
         {
@@ -202,9 +201,11 @@ public class ChatWindow extends javax.swing.JFrame
         receiver = jListAllUsers.getSelectedValue();
         jTextFieldMsg.setText("");
 //        JOptionPane.showMessageDialog(this, receiver);
-        
-
-//        client.sendMessage(receiver,textSubmit);
+        try {
+            client.sendMessage(receiver,textSubmit);
+        } catch (RemoteException ex) {
+            Logger.getLogger(ChatWindow.class.getName()).log(Level.SEVERE, null, ex);
+        }
          
         
         
@@ -234,7 +235,20 @@ public class ChatWindow extends javax.swing.JFrame
         this.getRootPane().setDefaultButton(jButtonSend);
         jTextPaneChat.setBackground(Color.red);
         jTextPaneChat.setText("Selecione alguem");
-          
+        
+        myAttributeSet = new SimpleAttributeSet();
+        StyleConstants.setForeground(myAttributeSet, Color.white);
+        StyleConstants.setBackground(myAttributeSet, Color.black);
+        StyleConstants.setBold(myAttributeSet, true);
+        
+        
+        theirAttributeSet = new SimpleAttributeSet();
+        StyleConstants.setForeground(theirAttributeSet, Color.black);
+        StyleConstants.setBackground(theirAttributeSet, Color.green);
+        StyleConstants.setBold(theirAttributeSet, false);
+        
+        
+         
     }//GEN-LAST:event_formWindowOpened
 
     private void jListAllUsersMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_jListAllUsersMouseClicked
@@ -294,7 +308,20 @@ public class ChatWindow extends javax.swing.JFrame
     {
         JOptionPane.showMessageDialog(this, s);
     }
-
+    public void setText(String content)
+    {
+        StyledDocument doc = jTextPaneChat.getStyledDocument();
+        try
+        {
+            doc.insertString(doc.getLength(), content + "\n", theirAttributeSet);
+        }
+        catch(Exception e)
+        {
+                // error
+        }
+        
+        
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonSend;
     private javax.swing.JLabel jLabelTitle;

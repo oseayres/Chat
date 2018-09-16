@@ -118,4 +118,12 @@ public class Server extends java.rmi.server.UnicastRemoteObject implements Ichat
     {
         return this.names;
     }
+
+    @Override
+    public void managerMessage(String senderId, String receiverId, String msgContent) throws RemoteException
+    {
+//        System.out.println("Routing...");
+        int idx = names.indexOf(receiverId);
+        this.clients_interfaces.get(idx).recvMsgFromServer(senderId,msgContent);
+    }
 }

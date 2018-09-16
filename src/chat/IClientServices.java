@@ -12,4 +12,6 @@ package chat;
 public interface IClientServices extends java.rmi.Remote
 {
     public void updateListOfClients() throws java.rmi.RemoteException;
+
+    public void recvMsgFromServer(String senderId, String msgContent) throws java.rmi.RemoteException;
 }

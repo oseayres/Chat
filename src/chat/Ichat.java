@@ -17,4 +17,6 @@ public interface Ichat extends java.rmi.Remote
     public String activateClient(String client_id) throws java.rmi.RemoteException;
     public ArrayList<String> listOfClients() throws java.rmi.RemoteException;
     public void disconnect(String id) throws java.rmi.RemoteException;
+
+    public void managerMessage(String senderId, String receiverId, String msgContent) throws java.rmi.RemoteException;
 }
