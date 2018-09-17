@@ -97,6 +97,6 @@ public class Client
     }
     public void recvMsgFromServer(String senderId, String msgContent)
     {
-        view_ref.setText(msgContent);
+        view_ref.updateChatContent(msgContent);
     }
 }
