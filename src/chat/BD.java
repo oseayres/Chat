@@ -10,6 +10,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -83,6 +84,49 @@ public class BD {
             throw new RuntimeException(ex);
         }
         
+        
+    }
+
+    public ArrayList<Chatter> getChatter(String senderId, String receiverId) {
+        int p1 = 1;
+        int p2 = 2;
+        
+        
+        try {
+            
+            //select content from chat c, users u, users b where u.id_user = c.sender and b.id_user = c.receiver;  
+            // selec fudido:
+            // select content,dt from chat c where c.sender in (SELECT id_user FROM users where name = 'marco' or name = 'ze') and c.receiver in (SELECT id_user FROM users where name = 'ze' or name = 'marco' ) order by dt; 
+            PreparedStatement id = conn.prepareStatement("SELECT id_user FROM users WHERE name=?");
+            id.setString(1,senderId);
+//            System.out.println("Inicio Select");
+            ResultSet rs= id.executeQuery();
+            if(rs.next())
+            {
+//                System.out.println("entrei");
+                p1 = rs.getInt("id_user");
+//                System.out.println("P1: "+ p1);
+            }
+//            else
+//                return;
+            
+            id.setString(1,receiverId);
+            rs= id.executeQuery();
+            if(rs.next())
+            {
+                p2 = rs.getInt("id_user");
+//                System.out.println("P2: "+ p2);
+            }
+//            else
+//                return;
+            id.close();
+            
+            // p1 e p1 are id_user1 and id_user2
+            
+            
+        }catch (SQLException ex) {
+            throw new RuntimeException(ex);
+        }
         
     }
     

@@ -139,12 +139,16 @@ public class Server extends java.rmi.server.UnicastRemoteObject implements Ichat
     @Override
     public void managerMessage(String senderId, String receiverId, String msgContent, String date) throws RemoteException
     {
-//        System.out.println("Routing...");
+
         int idx = names.indexOf(receiverId);
         this.clients_interfaces.get(idx).recvMsgFromServer(senderId,msgContent);
         
        // storaged message in database
        bd.insertChat(senderId,receiverId,msgContent,date);
         
+    }
+    public ArrayList<Chatter> getHistory(String senderId, String receiverId)
+    {
+        return bd.getChatter(senderId,receiverId);
     }
 }
