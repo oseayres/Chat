@@ -33,6 +33,8 @@ public class ChatWindow extends javax.swing.JFrame
     // styling the text
     private SimpleAttributeSet myAttributeSet;
     private SimpleAttributeSet theirAttributeSet;
+    
+    private String last_contact;
 
     /**
      * Creates new form ChatWindow2
@@ -47,6 +49,7 @@ public class ChatWindow extends javax.swing.JFrame
                
         this.user_name = user_name;
         this.screenLogin = screenLogin;
+        this.last_contact = "";
     }
     
     
@@ -54,8 +57,10 @@ public class ChatWindow extends javax.swing.JFrame
     {
         jListAllUsers.removeAll();
         DefaultListModel listModel = new DefaultListModel();
-        for (String user : users) {
-            listModel.addElement(user);
+        for (String user : users)
+        {
+            if (user.equals(user_name) == false)
+                listModel.addElement(user);
         }
         jListAllUsers.setModel(listModel);
     }
@@ -184,7 +189,7 @@ public class ChatWindow extends javax.swing.JFrame
     {//GEN-HEADEREND:event_jButtonSendActionPerformed
         // TODO add your handling code here:
         String textSubmit = jTextFieldMsg.getText();
-//        jTextPane1.setText(textSubmit);
+//        jTextPane1.updateChatContent(textSubmit);
         StyledDocument doc = jTextPaneChat.getStyledDocument();
         
         try
@@ -253,10 +258,15 @@ public class ChatWindow extends javax.swing.JFrame
 
     private void jListAllUsersMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_jListAllUsersMouseClicked
     {//GEN-HEADEREND:event_jListAllUsersMouseClicked
-        // TODO add your handling code here:
-        jTextPaneChat.setText("");
-        // faz uma busca pelo historico de conversa com a pessoa selecionada
-        jTextPaneChat.setBackground(new Color(211,211,211));
+        String new_contact = jListAllUsers.getSelectedValue();
+        if (new_contact != null && new_contact.equals(last_contact) == false)
+        {
+            last_contact = new_contact;
+            
+            jTextPaneChat.setText("");
+            // faz uma busca pelo historico de conversa com a pessoa selecionada
+            jTextPaneChat.setBackground(new Color(230,230,230));
+        }
     }//GEN-LAST:event_jListAllUsersMouseClicked
 
     /**
@@ -308,7 +318,9 @@ public class ChatWindow extends javax.swing.JFrame
     {
         JOptionPane.showMessageDialog(this, s);
     }
-    public void setText(String content)
+    
+    
+    public void updateChatContent(String content)
     {
         StyledDocument doc = jTextPaneChat.getStyledDocument();
         try
@@ -319,8 +331,6 @@ public class ChatWindow extends javax.swing.JFrame
         {
                 // error
         }
-        
-        
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonSend;
