@@ -13,6 +13,17 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
+// imports for  database
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+
 /**
  *
  * @author jp
@@ -21,6 +32,7 @@ public class Server extends java.rmi.server.UnicastRemoteObject implements Ichat
 {
     private ArrayList<String> names;
     private ArrayList<IClientServices> clients_interfaces;
+    private BD bd;
     
     public static void main(String args[])
     {
@@ -47,6 +59,11 @@ public class Server extends java.rmi.server.UnicastRemoteObject implements Ichat
     {
         this.names = new ArrayList<>();
         this.clients_interfaces = new ArrayList<>();
+        
+        this.bd = new BD();
+        
+        
+    
     }
     
 
@@ -120,10 +137,14 @@ public class Server extends java.rmi.server.UnicastRemoteObject implements Ichat
     }
 
     @Override
-    public void managerMessage(String senderId, String receiverId, String msgContent) throws RemoteException
+    public void managerMessage(String senderId, String receiverId, String msgContent, String date) throws RemoteException
     {
 //        System.out.println("Routing...");
         int idx = names.indexOf(receiverId);
         this.clients_interfaces.get(idx).recvMsgFromServer(senderId,msgContent);
+        
+       // storaged message in database
+       bd.insertChat(senderId,receiverId,msgContent,date);
+        
     }
 }

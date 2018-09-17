@@ -9,9 +9,17 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import java.util.GregorianCalendar;
+import java.util.Locale;
 
 /**
  *
@@ -93,7 +101,13 @@ public class Client
     public void sendMessage(String receiver, String textSubmit) throws RemoteException 
     {
 //        System.out.println("sending msg");
-        remote_ref.managerMessage(this.id, receiver, textSubmit);
+        // get hour 
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
+        System.out.println(dtf.format(now));
+        String date = dtf.format(now);
+        
+        remote_ref.managerMessage(this.id, receiver, textSubmit,date);
     }
     public void recvMsgFromServer(String senderId, String msgContent)
     {
