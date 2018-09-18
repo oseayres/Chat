@@ -1,5 +1,6 @@
 package view;
 
+import chat.Chatter;
 import chat.Client;
 import java.awt.Color;
 import java.rmi.RemoteException;
@@ -266,6 +267,12 @@ public class ChatWindow extends javax.swing.JFrame
             jTextPaneChat.setText("");
             // faz uma busca pelo historico de conversa com a pessoa selecionada
             jTextPaneChat.setBackground(new Color(230,230,230));
+            
+            try {
+                client.getHistoryOfChats(new_contact);
+            } catch (RemoteException ex) {
+                Logger.getLogger(ChatWindow.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_jListAllUsersMouseClicked
 
@@ -331,6 +338,36 @@ public class ChatWindow extends javax.swing.JFrame
         {
                 // error
         }
+    }
+    public void writeChat(ArrayList<Chatter> history)
+    {
+        System.out.println("he" + history.size());
+        SimpleAttributeSet attr;
+        StyledDocument doc = jTextPaneChat.getStyledDocument();
+        for(Chatter obj : history)
+        {
+            System.out.println("aqui");
+            System.out.println("Receiver: " + obj.receiver);
+            System.out.println("Sender: "+ obj.sender);
+            System.out.println("Content: " + obj.content);
+            System.out.println("Date: " + obj.date);
+            System.out.println("");
+            if(obj.sender.equals(user_name))
+                attr = myAttributeSet;
+            else
+                attr = theirAttributeSet;
+            try
+            {
+                System.out.println("here");
+               doc.insertString(doc.getLength(), obj.content + "\n", attr);
+                System.out.println("here2");
+            }
+            catch(Exception e)
+            {
+                  System.err.println("Error in history");
+            }
+        }
+//         jTextPaneChat.setText(msg);
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonSend;

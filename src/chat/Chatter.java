@@ -6,6 +6,7 @@
 package chat;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  *
@@ -24,5 +25,7 @@ public class Chatter implements Serializable {
         this.content = content;
         this.date = date;
     }
+
+ 
     
 }

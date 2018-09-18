@@ -88,45 +88,32 @@ public class BD {
     }
 
     public ArrayList<Chatter> getChatter(String senderId, String receiverId) {
-        int p1 = 1;
-        int p2 = 2;
-        
+
+        ArrayList<Chatter> content = new ArrayList<>();
         
         try {
-            
-            //select content from chat c, users u, users b where u.id_user = c.sender and b.id_user = c.receiver;  
-            // selec fudido:
             // select content,dt from chat c where c.sender in (SELECT id_user FROM users where name = 'marco' or name = 'ze') and c.receiver in (SELECT id_user FROM users where name = 'ze' or name = 'marco' ) order by dt; 
-            PreparedStatement id = conn.prepareStatement("SELECT id_user FROM users WHERE name=?");
+//            System.out.println("Init getChatter");
+            PreparedStatement id = conn.prepareStatement("select sender,receiver,content,dt from chat c where c.sender in (SELECT id_user FROM users where name = ? or name = ?) and c.receiver in (SELECT id_user FROM users where name = ? or name = ? ) order by dt");
+            
             id.setString(1,senderId);
-//            System.out.println("Inicio Select");
+            id.setString(2,receiverId);
+            id.setString(3,senderId);
+            id.setString(4,receiverId);
+          
+           
             ResultSet rs= id.executeQuery();
-            if(rs.next())
-            {
-//                System.out.println("entrei");
-                p1 = rs.getInt("id_user");
-//                System.out.println("P1: "+ p1);
+            while(rs.next())
+            {   
+                Chatter obj = new Chatter(senderId,receiverId,rs.getString("content"),rs.getString("dt")); 
+                content.add(obj);
+                
             }
-//            else
-//                return;
-            
-            id.setString(1,receiverId);
-            rs= id.executeQuery();
-            if(rs.next())
-            {
-                p2 = rs.getInt("id_user");
-//                System.out.println("P2: "+ p2);
-            }
-//            else
-//                return;
-            id.close();
-            
-            // p1 e p1 are id_user1 and id_user2
-            
             
         }catch (SQLException ex) {
             throw new RuntimeException(ex);
         }
+        return content;
         
     }
     

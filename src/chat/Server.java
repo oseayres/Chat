@@ -43,12 +43,6 @@ public class Server extends java.rmi.server.UnicastRemoteObject implements Ichat
             Registry r = LocateRegistry.createRegistry(1099);
             Naming.rebind("joe-chat",(Remote) s);
             
-//            Thread.sleep(3000);
-//            Naming.unbind("joe-chat");
-//            UnicastRemoteObject.unexportObject(r, true);
-//            UnicastRemoteObject.unexportObject(s, true);
-            
-//            LocateRegistry.getRegistry();
         }
         catch (Exception e) {
             System.err.println("Problema: " + e);
@@ -61,8 +55,6 @@ public class Server extends java.rmi.server.UnicastRemoteObject implements Ichat
         this.clients_interfaces = new ArrayList<>();
         
         this.bd = new BD();
-        
-        
     
     }
     
@@ -144,11 +136,16 @@ public class Server extends java.rmi.server.UnicastRemoteObject implements Ichat
         this.clients_interfaces.get(idx).recvMsgFromServer(senderId,msgContent);
         
        // storaged message in database
-       bd.insertChat(senderId,receiverId,msgContent,date);
+       bd.insertChat(senderId,receiverId,msgContent,date);// it's working
         
     }
-    public ArrayList<Chatter> getHistory(String senderId, String receiverId)
+    @Override
+    public ArrayList<Chatter> getHistory(String senderId, String receiverId) throws RemoteException
     {
-        return bd.getChatter(senderId,receiverId);
+//        System.out.println("Sender: " + senderId + " Receiver: " + receiverId);
+        ArrayList<Chatter> history = bd.getChatter(senderId,receiverId);
+        return history;
+        
     }
+
 }

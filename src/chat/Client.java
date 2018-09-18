@@ -93,15 +93,9 @@ public class Client
     }
     
     
-//    public ArrayList<String> getClients()
-//    {
-//        
-//    }
-
     public void sendMessage(String receiver, String textSubmit) throws RemoteException 
     {
-//        System.out.println("sending msg");
-        // get hour 
+ 
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime now = LocalDateTime.now();
         System.out.println(dtf.format(now));
@@ -109,8 +103,18 @@ public class Client
         
         remote_ref.managerMessage(this.id, receiver, textSubmit,date);
     }
+    
+    
     public void recvMsgFromServer(String senderId, String msgContent)
     {
         view_ref.updateChatContent(msgContent);
+    }
+    
+    
+    public void getHistoryOfChats(String other) throws RemoteException
+    {
+        ArrayList<Chatter> history = remote_ref.getHistory(other, this.user_name);
+        view_ref.writeChat(history);
+
     }
 }
