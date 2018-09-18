@@ -54,7 +54,12 @@ public class Server extends java.rmi.server.UnicastRemoteObject implements Ichat
         this.names = new ArrayList<>();
         this.clients_interfaces = new ArrayList<>();
         
-        this.bd = new BD();
+        try { this.bd = new BD(); }
+        catch (RuntimeException e)
+        {
+            System.err.println(e);
+            System.exit(1);
+        }
     
     }
     
